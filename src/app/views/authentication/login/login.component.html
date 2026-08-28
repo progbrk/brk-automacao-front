@@ -1,0 +1,51 @@
+<c-container>
+  <c-row class="justify-content-center">
+    <c-col lg="6" md="8" xl="5">
+      <div class="d-flex flex-column gap-4">
+        <div class="text-center">
+          <img alt="BRK Automação" height="48" src="assets/img/logo.jpg" />
+        </div>
+        <c-card class="p-4">
+          <c-card-body class="d-flex flex-column gap-4">
+            <h2 class="h5 text-center mb-0">Entrar</h2>
+            <form (ngSubmit)="entrar()" cForm cRow class="gy-3" #loginForm="ngForm">
+              @if (erro) {
+                <c-col xs="12">
+                  <c-alert color="danger">{{ erro }}</c-alert>
+                </c-col>
+              }
+              <c-col xs="12">
+                <label cLabel for="usuario">Usuário</label>
+                <input
+                  autocomplete="username"
+                  cFormControl
+                  id="usuario"
+                  name="usuario"
+                  [(ngModel)]="usuario"
+                  required
+                />
+              </c-col>
+              <c-col xs="12">
+                <label cLabel for="senha">Senha</label>
+                <input
+                  autocomplete="current-password"
+                  cFormControl
+                  id="senha"
+                  name="senha"
+                  type="password"
+                  [(ngModel)]="senha"
+                  required
+                />
+              </c-col>
+              <c-col xs="12">
+                <button cButton class="w-100" color="primary" type="submit" [disabled]="carregando || loginForm.invalid">
+                  {{ carregando ? 'Entrando...' : 'Entrar' }}
+                </button>
+              </c-col>
+            </form>
+          </c-card-body>
+        </c-card>
+      </div>
+    </c-col>
+  </c-row>
+</c-container>
