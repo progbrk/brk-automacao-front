@@ -1,0 +1,67 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar equipamento' : 'Novo equipamento' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #equipamentoForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="clienteId">Cliente</label>
+              <select cSelect id="clienteId" name="clienteId" [(ngModel)]="form.clienteId" required>
+                <option value="" disabled>Selecione um cliente</option>
+                @for (cliente of clientes; track cliente.id) {
+                  <option [value]="cliente.id">{{ cliente.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="tipoDispositivo">Tipo de dispositivo</label>
+              <input cFormControl id="tipoDispositivo" name="tipoDispositivo" [(ngModel)]="form.tipoDispositivo" required />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="identificador">Identificador</label>
+              <input cFormControl id="identificador" name="identificador" [(ngModel)]="form.identificador" />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="ipVpn">IP VPN</label>
+              <input cFormControl id="ipVpn" name="ipVpn" placeholder="ex: 172.30.0.238" [(ngModel)]="form.ipVpn" />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="status">Status</label>
+              <select cSelect id="status" name="status" [(ngModel)]="form.status" required>
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+                <option value="manutencao">Manutenção</option>
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="dataInstalacao">Data de instalação</label>
+              <input cFormControl type="date" id="dataInstalacao" name="dataInstalacao" [(ngModel)]="form.dataInstalacao" />
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || equipamentoForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/equipamentos">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
