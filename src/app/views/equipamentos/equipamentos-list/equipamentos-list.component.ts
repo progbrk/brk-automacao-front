@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -60,7 +60,8 @@ export class EquipamentosListComponent implements OnInit {
   constructor(
     private equipamentosApi: EquipamentosApiService,
     private clientesApi: ClientesApiService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +75,8 @@ export class EquipamentosListComponent implements OnInit {
       this.clientesPorId = new Map(resultado.items.map(c => [c.id, c.nome]));
     } catch {
       this.clientesPorId = new Map();
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
@@ -89,6 +92,7 @@ export class EquipamentosListComponent implements OnInit {
       this.erro = 'Não foi possível carregar os equipamentos.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 

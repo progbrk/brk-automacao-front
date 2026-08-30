@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -52,7 +52,8 @@ export class EquipamentoDetailComponent implements OnInit {
     private equipamentosApi: EquipamentosApiService,
     private clientesApi: ClientesApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   get isEdicao(): boolean {
@@ -82,6 +83,7 @@ export class EquipamentoDetailComponent implements OnInit {
       this.erro = 'Não foi possível carregar os dados.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -99,6 +101,7 @@ export class EquipamentoDetailComponent implements OnInit {
       this.erro = 'Não foi possível salvar o equipamento.';
     } finally {
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -113,6 +116,7 @@ export class EquipamentoDetailComponent implements OnInit {
     } catch {
       this.erro = 'Não foi possível excluir o equipamento.';
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 

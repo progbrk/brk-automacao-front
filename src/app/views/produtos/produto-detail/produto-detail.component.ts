@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -57,7 +57,8 @@ export class ProdutoDetailComponent implements OnInit {
   constructor(
     private produtosApi: ProdutosApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   get isEdicao(): boolean {
@@ -81,6 +82,7 @@ export class ProdutoDetailComponent implements OnInit {
       this.erro = 'Não foi possível carregar o produto.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -112,6 +114,7 @@ export class ProdutoDetailComponent implements OnInit {
       this.erro = 'Não foi possível salvar o produto.';
     } finally {
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -126,6 +129,7 @@ export class ProdutoDetailComponent implements OnInit {
     } catch {
       this.erro = 'Não foi possível excluir o produto.';
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -147,6 +151,7 @@ export class ProdutoDetailComponent implements OnInit {
     } finally {
       this.enviandoFoto = false;
       input.value = '';
+      this.cdr.markForCheck();
     }
   }
 
@@ -161,6 +166,7 @@ export class ProdutoDetailComponent implements OnInit {
       this.erro = 'Não foi possível remover a foto.';
     } finally {
       this.enviandoFoto = false;
+      this.cdr.markForCheck();
     }
   }
 

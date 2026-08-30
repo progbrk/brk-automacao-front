@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -44,7 +44,8 @@ export class ClienteDetailComponent implements OnInit {
   constructor(
     private clientesApi: ClientesApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   get isEdicao(): boolean {
@@ -75,6 +76,7 @@ export class ClienteDetailComponent implements OnInit {
       this.erro = 'Não foi possível carregar o cliente.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -92,6 +94,7 @@ export class ClienteDetailComponent implements OnInit {
       this.erro = 'Não foi possível salvar o cliente.';
     } finally {
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -106,6 +109,7 @@ export class ClienteDetailComponent implements OnInit {
     } catch {
       this.erro = 'Não foi possível excluir o cliente.';
       this.salvando = false;
+      this.cdr.markForCheck();
     }
   }
 

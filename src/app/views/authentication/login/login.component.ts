@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -43,7 +43,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async entrar(): Promise<void> {
@@ -56,6 +57,7 @@ export class LoginComponent {
       this.erro = error instanceof Error ? error.message : 'Usuário ou senha inválidos.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 }

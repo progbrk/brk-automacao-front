@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -54,7 +54,8 @@ export class ClientesListComponent implements OnInit {
 
   constructor(
     private clientesApi: ClientesApiService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +74,7 @@ export class ClientesListComponent implements OnInit {
       this.erro = 'Não foi possível carregar os clientes.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 

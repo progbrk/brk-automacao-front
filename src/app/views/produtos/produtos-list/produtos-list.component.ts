@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -56,7 +56,8 @@ export class ProdutosListComponent implements OnInit {
 
   constructor(
     private produtosApi: ProdutosApiService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +76,7 @@ export class ProdutosListComponent implements OnInit {
       this.erro = 'Não foi possível carregar os produtos.';
     } finally {
       this.carregando = false;
+      this.cdr.markForCheck();
     }
   }
 
