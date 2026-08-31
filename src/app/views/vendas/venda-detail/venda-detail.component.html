@@ -31,6 +31,15 @@
                 <option value="cancelada">Cancelada</option>
               </select>
             </c-col>
+            <c-col md="6">
+              <label cLabel for="parceiroId">Parceiro (indicação)</label>
+              <select cSelect id="parceiroId" name="parceiroId" [(ngModel)]="form.parceiroId">
+                <option [ngValue]="null">Nenhum</option>
+                @for (parceiro of parceiros; track parceiro.id) {
+                  <option [value]="parceiro.id">{{ parceiro.nome }}</option>
+                }
+              </select>
+            </c-col>
             <c-col xs="12">
               <label cLabel for="descricao">Descrição</label>
               <textarea cFormControl id="descricao" name="descricao" rows="3"

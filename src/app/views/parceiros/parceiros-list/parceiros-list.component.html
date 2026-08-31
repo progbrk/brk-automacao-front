@@ -1,0 +1,60 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <span>Parceiros</span>
+        <button cButton color="primary" routerLink="/parceiros/novo">Novo parceiro</button>
+      </c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        <c-input-group class="mb-3">
+          <input cFormControl placeholder="Buscar por nome ou tipo" [(ngModel)]="searchTerm" />
+        </c-input-group>
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <table cTable [hover]="true" [responsive]="true" [striped]="true" align="middle" class="mb-0 border">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Comissão</th>
+                <th>Contato</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (parceiro of parceirosFiltrados; track parceiro.id) {
+                <tr (click)="abrirParceiro(parceiro.id)" style="cursor: pointer">
+                  <td>{{ parceiro.nome }}</td>
+                  <td>{{ parceiro.tipo }}</td>
+                  <td>{{ parceiro.percentualComissao | number: '1.0-2' }}%</td>
+                  <td>{{ parceiro.telefone || parceiro.email || '-' }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4" class="text-center text-body-secondary py-4">Nenhum parceiro encontrado.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (totalPages > 1) {
+            <c-pagination class="mt-3" aria-label="Navegação de página">
+              @for (pagina of paginas; track pagina) {
+                <li cPageItem>
+                  <a cPageLink (click)="carregar(pagina)" [class.active]="pagina === pageIndex" style="cursor: pointer">{{ pagina }}</a>
+                </li>
+              }
+            </c-pagination>
+          }
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

@@ -17,11 +17,13 @@ import {
   TableDirective
 } from '@coreui/angular';
 import { Cliente } from '../../../models/cliente';
+import { Parceiro } from '../../../models/parceiro';
 import { Produto } from '../../../models/produto';
 import { Servico } from '../../../models/servico';
 import { VendaItem } from '../../../models/venda-item';
 import { VendaServico } from '../../../models/venda-servico';
 import { ClientesApiService } from '../../../services/clientes-api/clientes-api.service';
+import { ParceirosApiService } from '../../../services/parceiros-api/parceiros-api.service';
 import { ProdutosApiService } from '../../../services/produtos-api/produtos-api.service';
 import { ServicosApiService } from '../../../services/servicos-api/servicos-api.service';
 import { CreateVendaRequest } from '../../../services/vendas-api/requests/create-venda-request';
@@ -32,6 +34,7 @@ import { VendaServicosApiService } from '../../../services/venda-servicos-api/ve
 const CLIENTES_PAGE_SIZE = 200;
 const PRODUTOS_PAGE_SIZE = 200;
 const SERVICOS_PAGE_SIZE = 200;
+const PARCEIROS_PAGE_SIZE = 200;
 
 @Component({
   selector: 'app-venda-detail',
@@ -57,6 +60,7 @@ const SERVICOS_PAGE_SIZE = 200;
 export class VendaDetailComponent implements OnInit {
   id: string | null = null;
   clientes: Cliente[] = [];
+  parceiros: Parceiro[] = [];
   produtos: Produto[] = [];
   servicos: Servico[] = [];
   itens: VendaItem[] = [];
@@ -84,6 +88,7 @@ export class VendaDetailComponent implements OnInit {
     private vendaItensApi: VendaItensApiService,
     private vendaServicosApi: VendaServicosApiService,
     private clientesApi: ClientesApiService,
+    private parceirosApi: ParceirosApiService,
     private produtosApi: ProdutosApiService,
     private servicosApi: ServicosApiService,
     private route: ActivatedRoute,
@@ -98,14 +103,16 @@ export class VendaDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.carregando = true;
     try {
-      const [resultadoClientes, resultadoProdutos, resultadoServicos] = await Promise.all([
+      const [resultadoClientes, resultadoProdutos, resultadoServicos, resultadoParceiros] = await Promise.all([
         this.clientesApi.getAllPaginated({ pageIndex: 1, pageSize: CLIENTES_PAGE_SIZE }),
         this.produtosApi.getAllPaginated({ pageIndex: 1, pageSize: PRODUTOS_PAGE_SIZE }),
-        this.servicosApi.getAllPaginated({ pageIndex: 1, pageSize: SERVICOS_PAGE_SIZE })
+        this.servicosApi.getAllPaginated({ pageIndex: 1, pageSize: SERVICOS_PAGE_SIZE }),
+        this.parceirosApi.getAllPaginated({ pageIndex: 1, pageSize: PARCEIROS_PAGE_SIZE })
       ]);
       this.clientes = resultadoClientes.items;
       this.produtos = resultadoProdutos.items;
       this.servicos = resultadoServicos.items;
+      this.parceiros = resultadoParceiros.items;
 
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {

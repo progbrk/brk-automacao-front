@@ -40,5 +40,20 @@ export const navItems: INavData[] = [
     name: 'Assinaturas',
     url: '/assinaturas',
     iconComponent: { name: 'cil-credit-card' }
+  },
+  {
+    name: 'Fornecedores',
+    url: '/fornecedores',
+    iconComponent: { name: 'cil-inbox' }
+  },
+  {
+    name: 'Parceiros',
+    url: '/parceiros',
+    iconComponent: { name: 'cil-user-follow' }
+  },
+  {
+    name: 'Compras',
+    url: '/compras',
+    iconComponent: { name: 'cil-spreadsheet' }
   }
 ];

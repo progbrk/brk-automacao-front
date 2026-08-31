@@ -1,0 +1,79 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar compra' : 'Nova compra' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #compraForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="fornecedorId">Fornecedor</label>
+              <select cSelect id="fornecedorId" name="fornecedorId" [(ngModel)]="form.fornecedorId" required>
+                <option value="" disabled>Selecione um fornecedor</option>
+                @for (fornecedor of fornecedores; track fornecedor.id) {
+                  <option [value]="fornecedor.id">{{ fornecedor.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="item">Item</label>
+              <input cFormControl id="item" name="item" [(ngModel)]="form.item" required />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="quantidade">Quantidade</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="quantidade" name="quantidade"
+                     [(ngModel)]="form.quantidade" required />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="valorUnitario">Valor unitário (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="valorUnitario" name="valorUnitario"
+                     [(ngModel)]="form.valorUnitario" required />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="frete">Frete (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0" id="frete" name="frete" [(ngModel)]="form.frete" required />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="imposto">Imposto (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0" id="imposto" name="imposto" [(ngModel)]="form.imposto" required />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="dataCompra">Data da compra</label>
+              <input cFormControl type="date" id="dataCompra" name="dataCompra" [(ngModel)]="form.dataCompra" />
+            </c-col>
+            @if (isEdicao) {
+              <c-col md="3">
+                <label cLabel>Total (qtd × valor unit.)</label>
+                <input cFormControl [value]="(valorTotal ?? 0) | number: '1.2-2'" disabled />
+              </c-col>
+              <c-col md="3">
+                <label cLabel>Total com encargos</label>
+                <input cFormControl [value]="(valorTotalComEncargos ?? 0) | number: '1.2-2'" disabled />
+              </c-col>
+            }
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || compraForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/compras">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

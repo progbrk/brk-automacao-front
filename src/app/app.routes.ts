@@ -46,6 +46,18 @@ export const routes: Routes = [
       {
         path: 'assinaturas',
         loadChildren: () => import('./views/assinaturas/routes').then((m) => m.routes)
+      },
+      {
+        path: 'fornecedores',
+        loadChildren: () => import('./views/fornecedores/routes').then((m) => m.routes)
+      },
+      {
+        path: 'parceiros',
+        loadChildren: () => import('./views/parceiros/routes').then((m) => m.routes)
+      },
+      {
+        path: 'compras',
+        loadChildren: () => import('./views/compras/routes').then((m) => m.routes)
       }
     ]
   },
