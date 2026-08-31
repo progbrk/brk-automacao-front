@@ -1,0 +1,60 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <span>Colaboradores</span>
+        <button cButton color="primary" routerLink="/colaboradores/novo">Novo colaborador</button>
+      </c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        <c-input-group class="mb-3">
+          <input cFormControl placeholder="Buscar por nome ou cargo" [(ngModel)]="searchTerm" />
+        </c-input-group>
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <table cTable [hover]="true" [responsive]="true" [striped]="true" align="middle" class="mb-0 border">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Contato</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (colaborador of colaboradoresFiltrados; track colaborador.id) {
+                <tr (click)="abrirColaborador(colaborador.id)" style="cursor: pointer">
+                  <td>{{ colaborador.nome }}</td>
+                  <td>{{ colaborador.cargo || '-' }}</td>
+                  <td>{{ colaborador.telefone || colaborador.email || '-' }}</td>
+                  <td><c-badge [color]="colaborador.ativo ? 'success' : 'secondary'">{{ colaborador.ativo ? 'Ativo' : 'Inativo' }}</c-badge></td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="4" class="text-center text-body-secondary py-4">Nenhum colaborador encontrado.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (totalPages > 1) {
+            <c-pagination class="mt-3" aria-label="Navegação de página">
+              @for (pagina of paginas; track pagina) {
+                <li cPageItem>
+                  <a cPageLink (click)="carregar(pagina)" [class.active]="pagina === pageIndex" style="cursor: pointer">{{ pagina }}</a>
+                </li>
+              }
+            </c-pagination>
+          }
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

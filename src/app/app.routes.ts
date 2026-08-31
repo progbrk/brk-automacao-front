@@ -66,6 +66,14 @@ export const routes: Routes = [
       {
         path: 'pagamentos',
         loadChildren: () => import('./views/pagamentos/routes').then((m) => m.routes)
+      },
+      {
+        path: 'colaboradores',
+        loadChildren: () => import('./views/colaboradores/routes').then((m) => m.routes)
+      },
+      {
+        path: 'pagamentos-colaboradores',
+        loadChildren: () => import('./views/pagamentos-colaboradores/routes').then((m) => m.routes)
       }
     ]
   },

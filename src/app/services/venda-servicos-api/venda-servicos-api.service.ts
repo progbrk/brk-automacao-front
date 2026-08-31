@@ -26,6 +26,14 @@ export class VendaServicosApiService {
     return response.data;
   }
 
+  async getById(id: string): Promise<VendaServico> {
+    const headers = this.auth.getAuthHeaders();
+    const response = await firstValueFrom(
+      this.http.get<ResponseBase<VendaServico>>(`${this.baseUrl}/${id}`, { headers })
+    );
+    return response.data;
+  }
+
   async create(request: CreateVendaServicoRequest): Promise<VendaServico> {
     const headers = this.auth.getAuthHeaders();
     const response = await firstValueFrom(

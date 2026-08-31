@@ -65,5 +65,15 @@ export const navItems: INavData[] = [
     name: 'Pagamentos',
     url: '/pagamentos',
     iconComponent: { name: 'cil-task' }
+  },
+  {
+    name: 'Colaboradores',
+    url: '/colaboradores',
+    iconComponent: { name: 'cil-user' }
+  },
+  {
+    name: 'Pagamentos a colaboradores',
+    url: '/pagamentos-colaboradores',
+    iconComponent: { name: 'cil-layers' }
   }
 ];
