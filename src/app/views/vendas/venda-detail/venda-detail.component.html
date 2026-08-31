@@ -1,0 +1,142 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar venda' : 'Nova venda' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #vendaForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="clienteId">Cliente</label>
+              <select cSelect id="clienteId" name="clienteId" [(ngModel)]="form.clienteId" required>
+                <option value="" disabled>Selecione um cliente</option>
+                @for (cliente of clientes; track cliente.id) {
+                  <option [value]="cliente.id">{{ cliente.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="status">Status</label>
+              <select cSelect id="status" name="status" [(ngModel)]="form.status" required>
+                <option value="orcamento">Orçamento</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="instalada">Instalada</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
+            </c-col>
+            <c-col xs="12">
+              <label cLabel for="descricao">Descrição</label>
+              <textarea cFormControl id="descricao" name="descricao" rows="3"
+                        placeholder="Escopo do projeto/instalação contratado" [(ngModel)]="form.descricao"></textarea>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="valor">Valor (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="valor" name="valor" [(ngModel)]="form.valor" required />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="dataVenda">Data da venda</label>
+              <input cFormControl type="date" id="dataVenda" name="dataVenda" [(ngModel)]="form.dataVenda" />
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || vendaForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/vendas">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+
+    @if (isEdicao && !carregando) {
+      <c-card class="mb-4">
+        <c-card-header>Itens da venda (peças)</c-card-header>
+        <c-card-body>
+          <table cTable [responsive]="true" [striped]="true" align="middle" class="mb-3 border">
+            <thead>
+              <tr>
+                <th>Peça</th>
+                <th>Quantidade</th>
+                <th>Preço unitário</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of itens; track item.id) {
+                <tr>
+                  <td>{{ nomeProduto(item.produtoId) }}</td>
+                  <td>{{ item.quantidade }}</td>
+                  <td>{{ item.precoUnitario | number: '1.2-2' }}</td>
+                  <td>{{ (item.valorTotal ?? 0) | number: '1.2-2' }}</td>
+                  <td>
+                    <button cButton color="danger" variant="outline" size="sm" (click)="removerItem(item.id)">
+                      Remover
+                    </button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center text-body-secondary py-3">Nenhuma peça adicionada ainda.</td>
+                </tr>
+              }
+            </tbody>
+            @if (itens.length > 0) {
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end fw-semibold">Total dos itens</td>
+                  <td class="fw-semibold">{{ valorTotalItens | number: '1.2-2' }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            }
+          </table>
+
+          <c-row class="gy-3 align-items-end">
+            <c-col md="5">
+              <label cLabel for="itemProdutoId">Peça</label>
+              <select cSelect id="itemProdutoId" name="itemProdutoId"
+                      [(ngModel)]="novoItem.produtoId" (ngModelChange)="onProdutoSelecionado()">
+                <option value="" disabled>Selecione uma peça</option>
+                @for (produto of produtos; track produto.id) {
+                  <option [value]="produto.id">{{ produto.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="2">
+              <label cLabel for="itemQuantidade">Qtd.</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="itemQuantidade" name="itemQuantidade"
+                     [(ngModel)]="novoItem.quantidade" />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="itemPreco">Preço unitário (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="itemPreco" name="itemPreco"
+                     [(ngModel)]="novoItem.precoUnitario" />
+            </c-col>
+            <c-col md="2">
+              <button cButton color="primary" class="w-100" type="button"
+                      [disabled]="adicionandoItem || !novoItem.produtoId || novoItem.precoUnitario == null"
+                      (click)="adicionarItem()">
+                {{ adicionandoItem ? 'Adicionando...' : 'Adicionar' }}
+              </button>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    }
+  </c-col>
+</c-row>
