@@ -15,7 +15,6 @@ import {
   FormControlDirective,
   FormDirective,
   FormLabelDirective,
-  FormSelectDirective,
   RowComponent
 } from '@coreui/angular';
 import { Produto } from '../../../models/produto';
@@ -39,7 +38,6 @@ import { ProdutosApiService } from '../../../services/produtos-api/produtos-api.
     FormControlDirective,
     FormDirective,
     FormLabelDirective,
-    FormSelectDirective,
     FormsModule,
     RouterLink,
     RowComponent
@@ -101,7 +99,6 @@ export class ProdutoDetailComponent implements OnInit {
     this.form = {
       nome: produto.nome,
       descricao: produto.descricao,
-      tipo: produto.tipo,
       precoVenda: produto.precoVenda,
       custoBase: produto.custoBase,
       ativo: produto.ativo
@@ -183,7 +180,6 @@ export class ProdutoDetailComponent implements OnInit {
     return {
       nome: '',
       descricao: null,
-      tipo: 'peca',
       precoVenda: null,
       custoBase: null,
       ativo: true

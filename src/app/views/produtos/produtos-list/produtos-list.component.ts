@@ -90,7 +90,7 @@ export class ProdutosListComponent implements OnInit {
       return this.produtos;
     }
     return this.produtos.filter(
-      p => p.nome.toLowerCase().includes(termo) || p.tipo.toLowerCase().includes(termo)
+      p => p.nome.toLowerCase().includes(termo)
     );
   }
 

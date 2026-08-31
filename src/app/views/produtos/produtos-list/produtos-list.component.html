@@ -11,7 +11,7 @@
         }
 
         <c-input-group class="mb-3">
-          <input cFormControl placeholder="Buscar por nome ou tipo" [(ngModel)]="searchTerm" />
+          <input cFormControl placeholder="Buscar por nome" [(ngModel)]="searchTerm" />
         </c-input-group>
 
         @if (carregando) {
@@ -24,7 +24,6 @@
               <tr>
                 <th>Foto</th>
                 <th>Nome</th>
-                <th>Tipo</th>
                 <th>Preço de venda</th>
                 <th>Status</th>
               </tr>
@@ -40,13 +39,12 @@
                     }
                   </td>
                   <td>{{ produto.nome }}</td>
-                  <td>{{ produto.tipo }}</td>
                   <td>{{ produto.precoVenda != null ? (produto.precoVenda | number: '1.2-2') : '-' }}</td>
                   <td><c-badge [color]="produto.ativo ? 'success' : 'secondary'">{{ produto.ativo ? 'Ativo' : 'Inativo' }}</c-badge></td>
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="5" class="text-center text-body-secondary py-4">Nenhum produto encontrado.</td>
+                  <td colspan="4" class="text-center text-body-secondary py-4">Nenhum produto encontrado.</td>
                 </tr>
               }
             </tbody>

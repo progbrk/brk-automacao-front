@@ -54,17 +54,9 @@
           }
 
           <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #produtoForm="ngForm">
-            <c-col md="6">
+            <c-col xs="12">
               <label cLabel for="nome">Nome</label>
               <input cFormControl id="nome" name="nome" [(ngModel)]="form.nome" required />
-            </c-col>
-            <c-col md="6">
-              <label cLabel for="tipo">Tipo</label>
-              <select cSelect id="tipo" name="tipo" [(ngModel)]="form.tipo" required>
-                <option value="peca">Peça</option>
-                <option value="instalacao">Instalação</option>
-                <option value="assinatura">Assinatura</option>
-              </select>
             </c-col>
             <c-col xs="12">
               <label cLabel for="descricao">Descrição</label>
