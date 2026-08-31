@@ -13,24 +13,27 @@
           </div>
         } @else {
           @if (isEdicao) {
-            <div class="mb-4 d-flex align-items-center gap-3">
+            <div class="mb-4 d-flex flex-column align-items-start gap-2">
               @if (urlFoto; as foto) {
-                <img [src]="foto" alt="" width="220" height="220" style="object-fit: cover; border-radius: 4px; cursor: zoom-in"
-                     (click)="abrirZoom()" />
+                <div class="d-flex align-items-center justify-content-center border rounded"
+                     style="width: 220px; height: 220px; cursor: zoom-in; overflow: hidden"
+                     (click)="abrirZoom()">
+                  <img [src]="foto" alt="" style="max-width: 100%; max-height: 100%; object-fit: contain" />
+                </div>
               } @else {
                 <div class="d-flex align-items-center justify-content-center text-body-secondary border rounded"
                      style="width: 220px; height: 220px">
                   Sem foto
                 </div>
               }
-              <div>
+              <div class="d-flex gap-2">
                 <label cButton color="secondary" variant="outline" class="mb-0" style="cursor: pointer">
                   {{ enviandoFoto ? 'Enviando...' : (urlFoto ? 'Trocar foto' : 'Adicionar foto') }}
                   <input type="file" accept="image/jpeg,image/png,image/webp" hidden
                          [disabled]="enviandoFoto" (change)="selecionarFoto($event)" />
                 </label>
                 @if (urlFoto) {
-                  <button cButton color="danger" variant="outline" class="ms-2" [disabled]="enviandoFoto" (click)="removerFoto()">
+                  <button cButton color="danger" variant="outline" [disabled]="enviandoFoto" (click)="removerFoto()">
                     Remover
                   </button>
                 }
