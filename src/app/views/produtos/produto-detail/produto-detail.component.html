@@ -15,10 +15,11 @@
           @if (isEdicao) {
             <div class="mb-4 d-flex align-items-center gap-3">
               @if (urlFoto; as foto) {
-                <img [src]="foto" alt="" width="96" height="96" style="object-fit: cover; border-radius: 4px" />
+                <img [src]="foto" alt="" width="220" height="220" style="object-fit: cover; border-radius: 4px; cursor: zoom-in"
+                     (click)="abrirZoom()" />
               } @else {
                 <div class="d-flex align-items-center justify-content-center text-body-secondary border rounded"
-                     style="width: 96px; height: 96px">
+                     style="width: 220px; height: 220px">
                   Sem foto
                 </div>
               }
@@ -34,6 +35,18 @@
                   </button>
                 }
               </div>
+            </div>
+          }
+
+          @if (zoomAberto && urlFoto; as fotoZoom) {
+            <div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                 style="background: rgba(0, 0, 0, 0.85); z-index: 1050; cursor: zoom-out"
+                 (click)="fecharZoom()">
+              <img [src]="fotoZoom" alt="" style="max-width: 90vw; max-height: 90vh; object-fit: contain" />
+              <button cButton color="light" variant="ghost" class="position-absolute top-0 end-0 m-3"
+                      (click)="fecharZoom()">
+                Fechar ✕
+              </button>
             </div>
           }
 

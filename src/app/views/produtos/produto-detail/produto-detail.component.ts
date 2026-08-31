@@ -52,6 +52,7 @@ export class ProdutoDetailComponent implements OnInit {
   carregando = false;
   salvando = false;
   enviandoFoto = false;
+  zoomAberto = false;
   erro: string | null = null;
 
   constructor(
@@ -67,6 +68,14 @@ export class ProdutoDetailComponent implements OnInit {
 
   get urlFoto(): string | null {
     return this.produto ? this.produtosApi.urlFoto(this.produto) : null;
+  }
+
+  abrirZoom(): void {
+    this.zoomAberto = true;
+  }
+
+  fecharZoom(): void {
+    this.zoomAberto = false;
   }
 
   async ngOnInit(): Promise<void> {
