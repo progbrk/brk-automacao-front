@@ -37,13 +37,15 @@
                         placeholder="Escopo do projeto/instalação contratado" [(ngModel)]="form.descricao"></textarea>
             </c-col>
             <c-col md="6">
-              <label cLabel for="valor">Valor (R$)</label>
-              <input cFormControl type="number" step="0.01" min="0.01" id="valor" name="valor" [(ngModel)]="form.valor" required />
-            </c-col>
-            <c-col md="6">
               <label cLabel for="dataVenda">Data da venda</label>
               <input cFormControl type="date" id="dataVenda" name="dataVenda" [(ngModel)]="form.dataVenda" />
             </c-col>
+            @if (isEdicao) {
+              <c-col md="6">
+                <label cLabel>Valor total (peças + serviços)</label>
+                <input cFormControl [value]="valorVenda | number: '1.2-2'" disabled />
+              </c-col>
+            }
             <c-col xs="12" class="d-flex gap-2">
               <button cButton color="primary" type="submit" [disabled]="salvando || vendaForm.invalid">
                 {{ salvando ? 'Salvando...' : 'Salvar' }}
@@ -132,6 +134,81 @@
                       [disabled]="adicionandoItem || !novoItem.produtoId || novoItem.precoUnitario == null"
                       (click)="adicionarItem()">
                 {{ adicionandoItem ? 'Adicionando...' : 'Adicionar' }}
+              </button>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+
+      <c-card class="mb-4">
+        <c-card-header>Serviços da venda</c-card-header>
+        <c-card-body>
+          <table cTable [responsive]="true" [striped]="true" align="middle" class="mb-3 border">
+            <thead>
+              <tr>
+                <th>Serviço</th>
+                <th>Quantidade</th>
+                <th>Preço unitário</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of servicosVenda; track item.id) {
+                <tr>
+                  <td>{{ nomeServico(item.servicoId) }}</td>
+                  <td>{{ item.quantidade }}</td>
+                  <td>{{ item.precoUnitario | number: '1.2-2' }}</td>
+                  <td>{{ (item.valorTotal ?? 0) | number: '1.2-2' }}</td>
+                  <td>
+                    <button cButton color="danger" variant="outline" size="sm" (click)="removerServico(item.id)">
+                      Remover
+                    </button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center text-body-secondary py-3">Nenhum serviço adicionado ainda.</td>
+                </tr>
+              }
+            </tbody>
+            @if (servicosVenda.length > 0) {
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end fw-semibold">Total dos serviços</td>
+                  <td class="fw-semibold">{{ valorTotalServicos | number: '1.2-2' }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            }
+          </table>
+
+          <c-row class="gy-3 align-items-end">
+            <c-col md="5">
+              <label cLabel for="servicoId">Serviço</label>
+              <select cSelect id="servicoId" name="servicoId"
+                      [(ngModel)]="novoServico.servicoId" (ngModelChange)="onServicoSelecionado()">
+                <option value="" disabled>Selecione um serviço</option>
+                @for (servico of servicos; track servico.id) {
+                  <option [value]="servico.id">{{ servico.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="2">
+              <label cLabel for="servicoQuantidade">Qtd.</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="servicoQuantidade" name="servicoQuantidade"
+                     [(ngModel)]="novoServico.quantidade" />
+            </c-col>
+            <c-col md="3">
+              <label cLabel for="servicoPreco">Preço unitário (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="servicoPreco" name="servicoPreco"
+                     [(ngModel)]="novoServico.precoUnitario" />
+            </c-col>
+            <c-col md="2">
+              <button cButton color="primary" class="w-100" type="button"
+                      [disabled]="adicionandoServico || !novoServico.servicoId || novoServico.precoUnitario == null"
+                      (click)="adicionarServico()">
+                {{ adicionandoServico ? 'Adicionando...' : 'Adicionar' }}
               </button>
             </c-col>
           </c-row>

@@ -1,0 +1,52 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar plano' : 'Novo plano' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #planoForm="ngForm">
+            <c-col xs="12">
+              <label cLabel for="nome">Nome</label>
+              <input cFormControl id="nome" name="nome" [(ngModel)]="form.nome" required />
+            </c-col>
+            <c-col xs="12">
+              <label cLabel for="descricao">Descrição</label>
+              <textarea cFormControl id="descricao" name="descricao" rows="3" [(ngModel)]="form.descricao"></textarea>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="valorMensal">Valor mensal (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0" id="valorMensal" name="valorMensal" [(ngModel)]="form.valorMensal" />
+            </c-col>
+            <c-col xs="12">
+              <c-form-check>
+                <input cFormCheckInput type="checkbox" id="ativo" name="ativo" [(ngModel)]="form.ativo" />
+                <label cFormCheckLabel for="ativo">Ativo</label>
+              </c-form-check>
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || planoForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/planos-assinatura">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

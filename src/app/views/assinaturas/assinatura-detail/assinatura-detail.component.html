@@ -1,0 +1,79 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar assinatura' : 'Nova assinatura' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #assinaturaForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="clienteId">Cliente</label>
+              <select cSelect id="clienteId" name="clienteId" [(ngModel)]="form.clienteId" required>
+                <option value="" disabled>Selecione um cliente</option>
+                @for (cliente of clientes; track cliente.id) {
+                  <option [value]="cliente.id">{{ cliente.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="planoId">Plano</label>
+              <select cSelect id="planoId" name="planoId" [(ngModel)]="form.planoId"
+                      (ngModelChange)="onPlanoSelecionado()" required>
+                <option value="" disabled>Selecione um plano</option>
+                @for (plano of planos; track plano.id) {
+                  <option [value]="plano.id">{{ plano.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="valorMensal">Valor mensal (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="valorMensal" name="valorMensal"
+                     [(ngModel)]="form.valorMensal" required />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="diaCobranca">Dia da cobrança</label>
+              <input cFormControl type="number" min="1" max="28" id="diaCobranca" name="diaCobranca"
+                     [(ngModel)]="form.diaCobranca" required />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="status">Status</label>
+              <select cSelect id="status" name="status" [(ngModel)]="form.status" required>
+                <option value="ativa">Ativa</option>
+                <option value="suspensa">Suspensa</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="dataInicio">Data de início</label>
+              <input cFormControl type="date" id="dataInicio" name="dataInicio" [(ngModel)]="form.dataInicio" />
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="dataFim">Data de fim</label>
+              <input cFormControl type="date" id="dataFim" name="dataFim" [(ngModel)]="form.dataFim" />
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || assinaturaForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/assinaturas">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

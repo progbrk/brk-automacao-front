@@ -25,5 +25,20 @@ export const navItems: INavData[] = [
     name: 'Vendas',
     url: '/vendas',
     iconComponent: { name: 'cil-dollar' }
+  },
+  {
+    name: 'Serviços',
+    url: '/servicos',
+    iconComponent: { name: 'cil-tags' }
+  },
+  {
+    name: 'Planos de assinatura',
+    url: '/planos-assinatura',
+    iconComponent: { name: 'cil-calendar' }
+  },
+  {
+    name: 'Assinaturas',
+    url: '/assinaturas',
+    iconComponent: { name: 'cil-credit-card' }
   }
 ];
