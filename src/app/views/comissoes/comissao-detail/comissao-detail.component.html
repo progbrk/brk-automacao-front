@@ -1,0 +1,69 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar comissão' : 'Nova comissão' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #comissaoForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="parceiroId">Parceiro</label>
+              <select cSelect id="parceiroId" name="parceiroId"
+                      [(ngModel)]="form.parceiroId" (ngModelChange)="onReferenciaSelecionada()" required>
+                <option value="" disabled>Selecione um parceiro</option>
+                @for (parceiro of parceiros; track parceiro.id) {
+                  <option [value]="parceiro.id">{{ parceiro.nome }} ({{ parceiro.percentualComissao }}%)</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="vendaId">Venda</label>
+              <select cSelect id="vendaId" name="vendaId"
+                      [(ngModel)]="form.vendaId" (ngModelChange)="onReferenciaSelecionada()" required>
+                <option value="" disabled>Selecione uma venda</option>
+                @for (venda of vendas; track venda.id) {
+                  <option [value]="venda.id">{{ descricaoVenda(venda) }} — R$ {{ venda.valor | number: '1.2-2' }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="valor">Valor (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="valor" name="valor" [(ngModel)]="form.valor" required />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="status">Status</label>
+              <select cSelect id="status" name="status" [(ngModel)]="form.status" required>
+                <option value="pendente">Pendente</option>
+                <option value="pago">Pago</option>
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="dataPagamento">Data do pagamento</label>
+              <input cFormControl type="date" id="dataPagamento" name="dataPagamento" [(ngModel)]="form.dataPagamento" />
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || comissaoForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/comissoes">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

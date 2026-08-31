@@ -1,0 +1,90 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>{{ isEdicao ? 'Editar pagamento' : 'Novo pagamento' }}</c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <form cForm cRow class="gy-3" (ngSubmit)="salvar()" #pagamentoForm="ngForm">
+            <c-col md="6">
+              <label cLabel for="clienteId">Cliente</label>
+              <select cSelect id="clienteId" name="clienteId" [(ngModel)]="form.clienteId" required>
+                <option value="" disabled>Selecione um cliente</option>
+                @for (cliente of clientes; track cliente.id) {
+                  <option [value]="cliente.id">{{ cliente.nome }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="formaPagamento">Forma de pagamento</label>
+              <select cSelect id="formaPagamento" name="formaPagamento" [(ngModel)]="form.formaPagamento">
+                <option [ngValue]="null">Não informado</option>
+                <option value="pix">Pix</option>
+                <option value="cartao_credito">Cartão de crédito</option>
+                <option value="cartao_debito">Cartão de débito</option>
+                <option value="boleto">Boleto</option>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="transferencia">Transferência</option>
+              </select>
+            </c-col>
+            <p class="text-body-secondary small mb-0">Referente a (venda ou assinatura — pelo menos uma):</p>
+            <c-col md="6">
+              <label cLabel for="vendaId">Venda</label>
+              <select cSelect id="vendaId" name="vendaId" [(ngModel)]="form.vendaId" (ngModelChange)="onVendaSelecionada()">
+                <option [ngValue]="null">Nenhuma</option>
+                @for (venda of vendas; track venda.id) {
+                  <option [value]="venda.id">{{ descricaoVenda(venda) }} — R$ {{ venda.valor | number: '1.2-2' }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="assinaturaId">Assinatura</label>
+              <select cSelect id="assinaturaId" name="assinaturaId" [(ngModel)]="form.assinaturaId" (ngModelChange)="onAssinaturaSelecionada()">
+                <option [ngValue]="null">Nenhuma</option>
+                @for (assinatura of assinaturas; track assinatura.id) {
+                  <option [value]="assinatura.id">R$ {{ assinatura.valorMensal | number: '1.2-2' }}/mês — dia {{ assinatura.diaCobranca }}</option>
+                }
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="valor">Valor (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0.01" id="valor" name="valor" [(ngModel)]="form.valor" required />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="status">Status</label>
+              <select cSelect id="status" name="status" [(ngModel)]="form.status" required>
+                <option value="pendente">Pendente</option>
+                <option value="pago">Pago</option>
+                <option value="atrasado">Atrasado</option>
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="dataPagamento">Data do pagamento</label>
+              <input cFormControl type="date" id="dataPagamento" name="dataPagamento" [(ngModel)]="form.dataPagamento" />
+            </c-col>
+            <c-col xs="12" class="d-flex gap-2">
+              <button cButton color="primary" type="submit" [disabled]="salvando || pagamentoForm.invalid">
+                {{ salvando ? 'Salvando...' : 'Salvar' }}
+              </button>
+              <button cButton color="secondary" variant="outline" type="button" routerLink="/pagamentos">
+                Cancelar
+              </button>
+              @if (isEdicao) {
+                <button cButton color="danger" variant="outline" type="button" class="ms-auto" [disabled]="salvando" (click)="excluir()">
+                  Excluir
+                </button>
+              }
+            </c-col>
+          </form>
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

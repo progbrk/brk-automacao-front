@@ -55,5 +55,15 @@ export const navItems: INavData[] = [
     name: 'Compras',
     url: '/compras',
     iconComponent: { name: 'cil-spreadsheet' }
+  },
+  {
+    name: 'Comissões',
+    url: '/comissoes',
+    iconComponent: { name: 'cil-chart-pie' }
+  },
+  {
+    name: 'Pagamentos',
+    url: '/pagamentos',
+    iconComponent: { name: 'cil-task' }
   }
 ];

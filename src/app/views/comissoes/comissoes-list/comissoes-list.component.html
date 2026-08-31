@@ -1,0 +1,62 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <span>Comissões</span>
+        <button cButton color="primary" routerLink="/comissoes/novo">Nova comissão</button>
+      </c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        <c-input-group class="mb-3">
+          <input cFormControl placeholder="Buscar por parceiro" [(ngModel)]="searchTerm" />
+        </c-input-group>
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <table cTable [hover]="true" [responsive]="true" [striped]="true" align="middle" class="mb-0 border">
+            <thead>
+              <tr>
+                <th>Parceiro</th>
+                <th>Venda</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Pago em</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (comissao of comissoesFiltradas; track comissao.id) {
+                <tr (click)="abrirComissao(comissao.id)" style="cursor: pointer">
+                  <td>{{ nomeParceiro(comissao.parceiroId) }}</td>
+                  <td>{{ descricaoVenda(comissao.vendaId) }}</td>
+                  <td>{{ comissao.valor | number: '1.2-2' }}</td>
+                  <td><c-badge [color]="corStatus(comissao.status)">{{ comissao.status }}</c-badge></td>
+                  <td>{{ comissao.dataPagamento ? (comissao.dataPagamento | date: 'dd/MM/yyyy') : '-' }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center text-body-secondary py-4">Nenhuma comissão encontrada.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (totalPages > 1) {
+            <c-pagination class="mt-3" aria-label="Navegação de página">
+              @for (pagina of paginas; track pagina) {
+                <li cPageItem>
+                  <a cPageLink (click)="carregar(pagina)" [class.active]="pagina === pageIndex" style="cursor: pointer">{{ pagina }}</a>
+                </li>
+              }
+            </c-pagination>
+          }
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

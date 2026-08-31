@@ -1,0 +1,62 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="d-flex justify-content-between align-items-center">
+        <span>Pagamentos</span>
+        <button cButton color="primary" routerLink="/pagamentos/novo">Novo pagamento</button>
+      </c-card-header>
+      <c-card-body>
+        @if (erro) {
+          <c-alert color="danger">{{ erro }}</c-alert>
+        }
+
+        <c-input-group class="mb-3">
+          <input cFormControl placeholder="Buscar por cliente" [(ngModel)]="searchTerm" />
+        </c-input-group>
+
+        @if (carregando) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        } @else {
+          <table cTable [hover]="true" [responsive]="true" [striped]="true" align="middle" class="mb-0 border">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Valor</th>
+                <th>Forma</th>
+                <th>Status</th>
+                <th>Pago em</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (pagamento of pagamentosFiltrados; track pagamento.id) {
+                <tr (click)="abrirPagamento(pagamento.id)" style="cursor: pointer">
+                  <td>{{ nomeCliente(pagamento.clienteId) }}</td>
+                  <td>{{ pagamento.valor | number: '1.2-2' }}</td>
+                  <td>{{ pagamento.formaPagamento || '-' }}</td>
+                  <td><c-badge [color]="corStatus(pagamento.status)">{{ pagamento.status }}</c-badge></td>
+                  <td>{{ pagamento.dataPagamento ? (pagamento.dataPagamento | date: 'dd/MM/yyyy') : '-' }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center text-body-secondary py-4">Nenhum pagamento encontrado.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (totalPages > 1) {
+            <c-pagination class="mt-3" aria-label="Navegação de página">
+              @for (pagina of paginas; track pagina) {
+                <li cPageItem>
+                  <a cPageLink (click)="carregar(pagina)" [class.active]="pagina === pageIndex" style="cursor: pointer">{{ pagina }}</a>
+                </li>
+              }
+            </c-pagination>
+          }
+        }
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
