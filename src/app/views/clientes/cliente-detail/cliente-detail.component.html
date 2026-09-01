@@ -66,5 +66,96 @@
         }
       </c-card-body>
     </c-card>
+
+    @if (isEdicao) {
+      <c-card class="mb-4">
+        <c-card-header>Histórico do cliente</c-card-header>
+        <c-card-body>
+          @if (carregandoHistorico) {
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+          } @else {
+            <h6>Vendas</h6>
+            <table cTable [responsive]="true" [striped]="true" align="middle" class="mb-4 border">
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Valor</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (venda of vendas; track venda.id) {
+                  <tr (click)="abrirVenda(venda.id)" style="cursor: pointer">
+                    <td>{{ venda.descricao || '-' }}</td>
+                    <td>{{ venda.valor | number: '1.2-2' }}</td>
+                    <td>{{ venda.dataVenda | date: 'dd/MM/yyyy' }}</td>
+                    <td><c-badge [color]="corStatus(venda.status)">{{ venda.status }}</c-badge></td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="4" class="text-center text-body-secondary py-3">Nenhuma venda ainda.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+            <h6>Equipamentos</h6>
+            <table cTable [responsive]="true" [striped]="true" align="middle" class="mb-4 border">
+              <thead>
+                <tr>
+                  <th>Identificador</th>
+                  <th>Tipo</th>
+                  <th>IP VPN</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (equipamento of equipamentos; track equipamento.id) {
+                  <tr (click)="abrirEquipamento(equipamento.id)" style="cursor: pointer">
+                    <td>{{ equipamento.identificador || '-' }}</td>
+                    <td>{{ equipamento.tipoDispositivo }}</td>
+                    <td>{{ equipamento.ipVpn || '-' }}</td>
+                    <td><c-badge [color]="corStatus(equipamento.status)">{{ equipamento.status }}</c-badge></td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="4" class="text-center text-body-secondary py-3">Nenhum equipamento ainda.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+            <h6>Assinaturas</h6>
+            <table cTable [responsive]="true" [striped]="true" align="middle" class="mb-0 border">
+              <thead>
+                <tr>
+                  <th>Plano</th>
+                  <th>Valor mensal</th>
+                  <th>Dia cobrança</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (assinatura of assinaturas; track assinatura.id) {
+                  <tr (click)="abrirAssinatura(assinatura.id)" style="cursor: pointer">
+                    <td>{{ nomePlano(assinatura.planoId) }}</td>
+                    <td>{{ assinatura.valorMensal | number: '1.2-2' }}</td>
+                    <td>{{ assinatura.diaCobranca }}</td>
+                    <td><c-badge [color]="corStatus(assinatura.status)">{{ assinatura.status }}</c-badge></td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="4" class="text-center text-body-secondary py-3">Nenhuma assinatura ainda.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </c-card-body>
+      </c-card>
+    }
   </c-col>
 </c-row>

@@ -49,10 +49,22 @@
               <label cLabel for="dataVenda">Data da venda</label>
               <input cFormControl type="date" id="dataVenda" name="dataVenda" [(ngModel)]="form.dataVenda" />
             </c-col>
+            <c-col md="6">
+              <label cLabel for="desconto">Desconto (R$)</label>
+              <input cFormControl type="number" step="0.01" min="0" id="desconto" name="desconto"
+                     [(ngModel)]="form.desconto" />
+            </c-col>
             @if (isEdicao) {
               <c-col md="6">
-                <label cLabel>Valor total (peças + serviços)</label>
-                <input cFormControl [value]="valorVenda | number: '1.2-2'" disabled />
+                <label cLabel>Subtotal (peças + serviços)</label>
+                <input cFormControl [value]="subtotal | number: '1.2-2'" disabled />
+              </c-col>
+              <c-col md="6">
+                <label cLabel>Valor final (após desconto)</label>
+                <input cFormControl [value]="previewValorFinal | number: '1.2-2'" disabled />
+                @if (previewDivergeDoSalvo) {
+                  <small class="text-body-secondary">Salve pra confirmar — valor salvo atualmente: {{ valorVenda | number: '1.2-2' }}</small>
+                }
               </c-col>
             }
             <c-col xs="12" class="d-flex gap-2">

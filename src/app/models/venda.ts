@@ -3,6 +3,7 @@ export interface Venda {
   clienteId: string;
   parceiroId: string | null;
   descricao: string | null;
+  desconto: number;
   valor: number;
   status: string;
   dataVenda: string;

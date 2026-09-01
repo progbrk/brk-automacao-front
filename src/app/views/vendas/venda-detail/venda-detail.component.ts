@@ -135,6 +135,7 @@ export class VendaDetailComponent implements OnInit {
       clienteId: venda.clienteId,
       parceiroId: venda.parceiroId,
       descricao: venda.descricao,
+      desconto: venda.desconto,
       status: venda.status,
       dataVenda: venda.dataVenda
     };
@@ -291,11 +292,27 @@ export class VendaDetailComponent implements OnInit {
     return this.servicosVenda.reduce((soma, item) => soma + (item.valorTotal ?? 0), 0);
   }
 
+  get subtotal(): number {
+    return this.valorTotalItens + this.valorTotalServicos;
+  }
+
+  get previewValorFinal(): number {
+    return Math.max(0, this.subtotal - (this.form.desconto || 0));
+  }
+
+  get previewDivergeDoSalvo(): boolean {
+    // Arredonda em centavos antes de comparar — soma em ponto flutuante no
+    // front pode diferir do total calculado com NUMERIC no backend por uma
+    // fração de centavo mesmo quando o valor exibido é idêntico.
+    return Math.round(this.previewValorFinal * 100) !== Math.round(this.valorVenda * 100);
+  }
+
   private formVazio(): CreateVendaRequest {
     return {
       clienteId: '',
       parceiroId: null,
       descricao: null,
+      desconto: 0,
       status: 'orcamento',
       dataVenda: null
     };
