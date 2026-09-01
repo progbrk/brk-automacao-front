@@ -2,7 +2,15 @@
 
 // Import styles with default layout.
 @use "@coreui/coreui/scss/coreui" as * with (
-  $enable-deprecation-messages: false
+  $enable-deprecation-messages: false,
+  // Padrão (16rem) cortava/recuava texto de item de menu mais longo.
+  // Definido aqui (não como custom property em runtime) porque todo o
+  // comportamento responsivo do sidebar (oculto, narrow, unfoldable) é
+  // calculado a partir dessa variável em tempo de build — sobrescrever só
+  // a custom property (--cui-sidebar-width) em runtime deixava esses
+  // estados dessincronizados (conteúdo principal não recuperava o espaço
+  // ao esconder o menu).
+  $sidebar-width: 18rem
 );
 
 // Import Chart.js custom tooltips styles
