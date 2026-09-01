@@ -16,6 +16,13 @@
   //.sidebar-nav {
   //  scrollbar-color: var(--cui-gray-500, #444) transparent;
   //}
+
+  // Itens dentro de um grupo do menu: recuados e menores que os itens de
+  // topo, pra ficar claro visualmente que pertencem ao grupo.
+  .nav-group-items .nav-link {
+    padding-left: 2.5rem;
+    font-size: 0.85rem;
+  }
 }
 
 // ng-scrollbar css variables
