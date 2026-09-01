@@ -1,4 +1,25 @@
 :host::ng-deep {
+  // Largura padrão do CoreUI (16rem) cortava texto de item mais longo,
+  // ainda mais com o recuo extra dos itens de grupo. --cui-sidebar-width
+  // controla só a barra em si; --cui-sidebar-occupy-start é o que reserva
+  // o espaço pro conteúdo principal (.wrapper, ver _theme.scss) e o
+  // CoreUI seta com um valor FIXO (16rem, hardcoded em tempo de build),
+  // não lido de --cui-sidebar-width em runtime.
+  .sidebar {
+    --cui-sidebar-width: 18rem;
+  }
+
+  // O próprio CoreUI já seta --cui-sidebar-occupy-start em `.wrapper` via
+  // `.sidebar:not(.hide):not(...):not(...):not(...):not(.sidebar-end) ~ *`
+  // — especificidade bem maior que um simples ".wrapper" aqui (mesmo com
+  // o ::ng-deep), então sem !important essa regra vencia e resetava de
+  // volta pra 16rem, sobrepondo (não só cortando) o começo do conteúdo,
+  // barra fixa por cima. É o único !important deste arquivo, especificamente
+  // pra vencer essa regra do CoreUI.
+  .wrapper {
+    --cui-sidebar-occupy-start: 18rem !important;
+  }
+
   .ng-scrollbar {
     --scrollbar-padding: 1px;
     --scrollbar-size: 5px;

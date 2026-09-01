@@ -17,20 +17,15 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-settings' }
   },
   {
-    name: 'Vendas',
-    url: '/vendas',
-    iconComponent: { name: 'cil-dollar' }
-  },
-  {
     name: 'Pagamentos',
     url: '/pagamentos',
     iconComponent: { name: 'cil-task' }
   },
   {
-    name: 'Catálogo & Assinaturas',
+    name: 'Catálogo',
     // url interno só pra evitar que o grupo abra sozinho ao carregar (o
     // cabeçalho do grupo nunca navega, só expande/colapsa no clique).
-    url: '/grupo/catalogo-assinaturas',
+    url: '/grupo/catalogo',
     iconComponent: { name: 'cil-basket' },
     children: [
       {
@@ -47,6 +42,18 @@ export const navItems: INavData[] = [
         name: 'Planos de assinatura',
         url: '/planos-assinatura',
         iconComponent: { name: 'cil-calendar' }
+      }
+    ]
+  },
+  {
+    name: 'Vendas & Assinaturas',
+    url: '/grupo/vendas-assinaturas',
+    iconComponent: { name: 'cil-dollar' },
+    children: [
+      {
+        name: 'Vendas',
+        url: '/vendas',
+        iconComponent: { name: 'cil-dollar' }
       },
       {
         name: 'Assinaturas',

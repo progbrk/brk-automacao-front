@@ -6,7 +6,6 @@
  * - Sidebar toggle button
  * - Theme switcher (light/dark/auto)
  * - User dropdown menu (logout)
- * - Breadcrumb navigation
  * - Sticky positioning with scroll shadow effect
  *
  * @component
@@ -18,7 +17,6 @@ import { Router } from '@angular/router';
 
 import {
   AvatarComponent,
-  BreadcrumbRouterComponent,
   ColorModeService,
   ContainerComponent,
   DropdownComponent,
@@ -44,7 +42,6 @@ import { AuthService } from '../../../services/auth/auth.service';
     IconDirective,
     HeaderNavComponent,
     NgTemplateOutlet,
-    BreadcrumbRouterComponent,
     DropdownComponent,
     DropdownToggleDirective,
     AvatarComponent,
