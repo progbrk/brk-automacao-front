@@ -17,10 +17,14 @@
   //  scrollbar-color: var(--cui-gray-500, #444) transparent;
   //}
 
-  // Itens dentro de um grupo do menu: recuados e menores que os itens de
-  // topo, pra ficar claro visualmente que pertencem ao grupo.
+  // Itens dentro de um grupo do menu: menores e um pouco à direita do
+  // nome do grupo, pra ficar claro visualmente que pertencem a ele.
+  // Usa margin (não padding) pra deslocar o link inteiro sem mexer no
+  // padding que o CoreUI usa internamente pra alinhar o ícone (ícone tem
+  // margin-inline-start negativa calculada em cima desse padding — ver
+  // _sidebar-nav.scss `.nav-group-items .nav-link`/`.nav-icon`).
   .nav-group-items .nav-link {
-    padding-left: 2.5rem;
+    margin-left: 1rem;
     font-size: 0.85rem;
   }
 }
