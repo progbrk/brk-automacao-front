@@ -1,4 +1,13 @@
 :host::ng-deep {
+  // Largura do sidebar (16rem→18rem) é configurada em src/scss/styles.scss
+  // via $sidebar-width (Sass @use ... with), não aqui — precisa ser em
+  // tempo de build porque os estados responsivos do sidebar (oculto,
+  // narrow, unfoldable) e o espaço reservado pro conteúdo principal
+  // (--cui-sidebar-occupy-start) são todos calculados a partir dessa
+  // variável. Uma tentativa anterior de sobrescrever só a custom property
+  // em runtime quebrava esses estados (conteúdo não recuperava o espaço
+  // ao esconder o menu).
+
   .ng-scrollbar {
     --scrollbar-padding: 1px;
     --scrollbar-size: 5px;
