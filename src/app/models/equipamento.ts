@@ -7,6 +7,8 @@ export interface Equipamento {
   ipVpn: string | null;
   status: string;
   dataInstalacao: string | null;
+  tipoConexao: string | null;
+  temToken: boolean;
   criadoEm: string;
   atualizadoEm: string;
 }

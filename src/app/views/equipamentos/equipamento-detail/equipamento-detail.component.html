@@ -46,6 +46,31 @@
               <label cLabel for="dataInstalacao">Data de instalação</label>
               <input cFormControl type="date" id="dataInstalacao" name="dataInstalacao" [(ngModel)]="form.dataInstalacao" />
             </c-col>
+
+            <c-col xs="12">
+              <hr />
+              <p class="text-body-secondary mb-2">
+                Conexão pro srv-brk-client importar automaticamente (deixe "Nenhum" se ainda não vai ser importado)
+              </p>
+            </c-col>
+            <c-col md="6">
+              <label cLabel for="tipoConexao">Tipo de conexão</label>
+              <select cSelect id="tipoConexao" name="tipoConexao" [(ngModel)]="form.tipoConexao">
+                <option [ngValue]="null">Nenhum</option>
+                <option value="HomeAssistant">Home Assistant</option>
+                <option value="Esp">ESP (web_server, direto)</option>
+                <option value="Kc">KC868</option>
+              </select>
+            </c-col>
+            @if (form.tipoConexao === 'HomeAssistant') {
+              <c-col md="6">
+                <label cLabel for="token">
+                  {{ temToken ? 'Novo access token (já configurado — deixe em branco pra manter)' : 'Access token do Home Assistant' }}
+                </label>
+                <input cFormControl type="password" id="token" name="token" [(ngModel)]="form.token" />
+              </c-col>
+            }
+
             <c-col xs="12" class="d-flex gap-2">
               <button cButton color="primary" type="submit" [disabled]="salvando || equipamentoForm.invalid">
                 {{ salvando ? 'Salvando...' : 'Salvar' }}

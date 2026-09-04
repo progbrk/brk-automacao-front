@@ -44,6 +44,7 @@ export class EquipamentoDetailComponent implements OnInit {
   id: string | null = null;
   clientes: Cliente[] = [];
   form: CreateEquipamentoRequest = this.formVazio();
+  temToken = false;
   carregando = false;
   salvando = false;
   erro: string | null = null;
@@ -76,8 +77,11 @@ export class EquipamentoDetailComponent implements OnInit {
           identificador: equipamento.identificador,
           ipVpn: equipamento.ipVpn,
           status: equipamento.status,
-          dataInstalacao: equipamento.dataInstalacao
+          dataInstalacao: equipamento.dataInstalacao,
+          tipoConexao: equipamento.tipoConexao,
+          token: null
         };
+        this.temToken = equipamento.temToken;
       }
     } catch {
       this.erro = 'Não foi possível carregar os dados.';
@@ -127,7 +131,9 @@ export class EquipamentoDetailComponent implements OnInit {
       identificador: null,
       ipVpn: null,
       status: 'ativo',
-      dataInstalacao: null
+      dataInstalacao: null,
+      tipoConexao: null,
+      token: null
     };
   }
 }
