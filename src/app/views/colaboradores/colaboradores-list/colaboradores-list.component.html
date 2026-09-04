@@ -24,6 +24,7 @@
               <tr>
                 <th>Nome</th>
                 <th>Cargo</th>
+                <th>Tipo</th>
                 <th>Contato</th>
                 <th>Status</th>
               </tr>
@@ -33,12 +34,13 @@
                 <tr (click)="abrirColaborador(colaborador.id)" style="cursor: pointer">
                   <td>{{ colaborador.nome }}</td>
                   <td>{{ colaborador.cargo || '-' }}</td>
+                  <td><c-badge [color]="colaborador.tipo === 'Terceiro' ? 'info' : 'primary'">{{ colaborador.tipo }}</c-badge></td>
                   <td>{{ colaborador.telefone || colaborador.email || '-' }}</td>
                   <td><c-badge [color]="colaborador.ativo ? 'success' : 'secondary'">{{ colaborador.ativo ? 'Ativo' : 'Inativo' }}</c-badge></td>
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="4" class="text-center text-body-secondary py-4">Nenhum colaborador encontrado.</td>
+                  <td colspan="5" class="text-center text-body-secondary py-4">Nenhum colaborador encontrado.</td>
                 </tr>
               }
             </tbody>

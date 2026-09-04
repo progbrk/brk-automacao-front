@@ -19,13 +19,24 @@
             </c-col>
             <c-col md="6">
               <label cLabel for="cargo">Cargo</label>
-              <input cFormControl id="cargo" name="cargo" placeholder="ex: Técnico de instalação" [(ngModel)]="form.cargo" />
+              <input cFormControl id="cargo" name="cargo" placeholder="ex: Técnico de instalação, Bombeiro Hidráulico" [(ngModel)]="form.cargo" />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="tipo">Tipo</label>
+              <select cSelect id="tipo" name="tipo" [(ngModel)]="form.tipo" required>
+                <option value="Interno">Interno (equipe própria)</option>
+                <option value="Terceiro">Terceiro (autônomo/prestador)</option>
+              </select>
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="cpfCnpj">CPF/CNPJ</label>
+              <input cFormControl id="cpfCnpj" name="cpfCnpj" placeholder="opcional" [(ngModel)]="form.cpfCnpj" />
             </c-col>
             <c-col md="4">
               <label cLabel for="telefone">Telefone</label>
               <input cFormControl id="telefone" name="telefone" [(ngModel)]="form.telefone" />
             </c-col>
-            <c-col md="4">
+            <c-col md="6">
               <label cLabel for="email">E-mail</label>
               <input cFormControl type="email" id="email" name="email" [(ngModel)]="form.email" />
             </c-col>

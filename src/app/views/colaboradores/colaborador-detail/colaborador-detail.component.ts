@@ -14,6 +14,7 @@ import {
   FormControlDirective,
   FormDirective,
   FormLabelDirective,
+  FormSelectDirective,
   RowComponent
 } from '@coreui/angular';
 import { ColaboradoresApiService } from '../../../services/colaboradores-api/colaboradores-api.service';
@@ -35,6 +36,7 @@ import { CreateColaboradorRequest } from '../../../services/colaboradores-api/re
     FormControlDirective,
     FormDirective,
     FormLabelDirective,
+    FormSelectDirective,
     FormsModule,
     RouterLink,
     RowComponent
@@ -70,6 +72,8 @@ export class ColaboradorDetailComponent implements OnInit {
       this.form = {
         nome: colaborador.nome,
         cargo: colaborador.cargo,
+        tipo: colaborador.tipo,
+        cpfCnpj: colaborador.cpfCnpj,
         telefone: colaborador.telefone,
         email: colaborador.email,
         ativo: colaborador.ativo
@@ -119,6 +123,8 @@ export class ColaboradorDetailComponent implements OnInit {
     return {
       nome: '',
       cargo: null,
+      tipo: 'Interno',
+      cpfCnpj: null,
       telefone: null,
       email: null,
       ativo: true
